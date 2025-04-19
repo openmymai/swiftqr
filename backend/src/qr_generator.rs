@@ -1,11 +1,12 @@
 use image::{ImageOutputFormat, ImageError, DynamicImage, Rgba, ImageBuffer}; // เอา Pixel ออก
 use qrcode::QrCode;
 use qrcode::types::QrError;
-use qrcode::render::Color;
+use qrcode::types::Color;
 use reqwest::Url;
 use std::io::Cursor;
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum QrGenError {
     QrError(QrError),
     ImageError(ImageError),

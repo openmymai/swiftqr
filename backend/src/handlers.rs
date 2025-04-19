@@ -4,7 +4,6 @@ use sqlx::PgPool;
 use uuid::Uuid;
 use std::str::FromStr;
 use reqwest::Url;
-use std::env;
 
 use crate::models::{GenerateQrPayload, ApiKey};
 use crate::qr_generator::{generate_qr_code, QrGenError};

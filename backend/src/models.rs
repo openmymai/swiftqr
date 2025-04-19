@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
+use bigdecimal::BigDecimal;
 
 #[derive(FromRow, Serialize, Debug)]
 pub struct User {
@@ -38,9 +39,16 @@ pub struct UsageLog {
 pub struct Transaction {
     pub id: i32,
     pub user_id: Option<i32>,
-    pub amount: sqlx::types::BigDecimal,
+    pub amount: BigDecimal,
     pub currency: String,
     pub status: String,
     pub payment_gateway_ref_id: Option<String>,
     pub created_at: DateTime<Utc>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct GenerateQrPayload {
+    pub text: String,
+    pub logo_url: Option<String>,
+    pub color: Option<String>,
 }
