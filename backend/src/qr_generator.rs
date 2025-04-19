@@ -1,7 +1,7 @@
 use image::{ImageOutputFormat, ImageError, DynamicImage, Rgba, ImageBuffer}; // เอา Pixel ออก
 use qrcode::QrCode;
 use qrcode::types::QrError;
-use qrcode::types::Color;
+use qrcode::render::Color;
 use reqwest::Url;
 use std::io::Cursor;
 
@@ -95,7 +95,7 @@ pub async fn generate_qr_code(
                 let qr_x = x - quiet_zone_size;
                 let qr_y = y - quiet_zone_size;
                 let index = (qr_y * dimension + qr_x) as usize;
-                let qr_color_enum = colors.get(index).copied().unwrap_or(Color::Light); // Default เป็น Light
+                let qr_color_enum = colors.get(index).copied().unwrap_or(Color::Light);
                 let is_dark = qr_color_enum == Color::Dark;
 
                 let pixel_color = if is_dark { qr_color } else { background_color };
@@ -112,7 +112,7 @@ pub async fn generate_qr_code(
         let qr_dim = image_rgba.width(); // ใช้ final_dimension
         // ... (Logic คำนวณขนาดและตำแหน่ง Logo เหมือนเดิม) ...
          let logo_size = (qr_dim as f32 * 0.25) as u32; // ปรับ % ตามต้องการ
-         let logo_resized = logo_image.thumbnail_exact(logo_size, logo_size);
+         let logo_resized = image::imageops::resize(&logo_image, logo_size, logo_size, image::imageops::FilterType::Lanczos3);
          let x = (qr_dim / 2).checked_sub(logo_resized.width() / 2).ok_or(QrGenError::LogoOverlayError("X position calc error".into()))?;
          let y = (qr_dim / 2).checked_sub(logo_resized.height() / 2).ok_or(QrGenError::LogoOverlayError("Y position calc error".into()))?;
 

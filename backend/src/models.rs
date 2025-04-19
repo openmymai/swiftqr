@@ -3,7 +3,6 @@ use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
-use bigdecimal::BigDecimal;
 
 #[derive(FromRow, Serialize, Debug)]
 pub struct User {
@@ -31,25 +30,17 @@ pub struct UsageLog {
     pub api_key_id: Option<i32>,
     pub endpoint_path: String,
     pub request_time: DateTime<Utc>,
-    pub status_code: i32,
-    pub ip_address: Option<String>,
+    status_code: i32, 
+    ip_address: Option<String>, 
 }
 
 #[derive(FromRow, Serialize, Debug)]
 pub struct Transaction {
     pub id: i32,
     pub user_id: Option<i32>,
-    pub amount: BigDecimal,
+    pub amount: sqlx::types::BigDecimal,
     pub currency: String,
     pub status: String,
     pub payment_gateway_ref_id: Option<String>,
     pub created_at: DateTime<Utc>,
-}
-
-// Input Struct สำหรับ API Generate QR
-#[derive(Deserialize, Debug)]
-pub struct GenerateQrPayload {
-    pub text: String, // Text or URL to encode
-    pub logo_url: Option<String>, // Optional URL for the logo image
-    pub color: Option<String>, // Optional Hex color string (e.g., "#000000" or "000000")
 }

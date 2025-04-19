@@ -1,12 +1,14 @@
-FROM rust:1.76-alpine as builder
+# swiftqr_api/backend/Dockerfile.backend
+FROM rust:1.85 as builder
 WORKDIR /app
 COPY . .
-RUN rustup target add x86_64-unknown-linux-musl 
-RUN apk update && apk add --no-cache musl-dev 
-RUN cargo build --release --target x86_64-unknown-linux-musl
+# ถ้าใช้ Image Base ที่ไม่ใช่ Alpine ลบ 2 บรรทัดนี้
+# RUN rustup target add x86_64-unknown-linux-musl
+# RUN apk update && apk add --no-cache musl-dev
+RUN cargo build --release 
 
-FROM alpine:latest 
+FROM debian:bullseye-slim
 WORKDIR /app
-COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/backend . 
+COPY --from=builder /app/target/release/backend .
 # Copy any static assets or config files needed by the backend if any
-CMD ["./backend"] 
+CMD ["./backend"]

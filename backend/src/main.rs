@@ -30,8 +30,6 @@ async fn main() -> std::io::Result<()> {
             .app_data(pool_data.clone())
             // API Endpoint หลัก
             .service(web::resource("/api/generate_qr").route(web::post().to(handlers::generate_qr)))
-            // **ใหม่:** API Endpoint สำหรับสร้าง Stripe Checkout Session
-            .service(web::resource("/api/create-checkout-session").route(web::post().to(handlers::create_checkout_session)))
             // Admin Endpoint (จำกัดการเข้าถึงใน Nginx)
             .service(web::resource("/api/admin/create_api_key").route(web::post().to(handlers::create_api_key_handler)))
             // Health Check
