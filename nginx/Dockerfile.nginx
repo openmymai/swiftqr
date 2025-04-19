@@ -1,0 +1,5 @@
+FROM nginx:alpine as builder
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+
+FROM nginx:alpine
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
